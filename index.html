@@ -1,105 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pooms' Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #1f1c2c, #928dab);
-      color: #f4f4f4;
+    /* Reset & Basics */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #f0f0f0;
+      min-height: 100vh;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Header */
     .header {
-      background: #121212;
+      background: rgba(0, 0, 0, 0.75);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      border-bottom: 2px solid #333;
+      border-bottom: 1px solid #444;
+      backdrop-filter: blur(10px);
     }
 
     #webname {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       color: #00ffff;
-      text-decoration: none;
+      font-weight: bold;
     }
 
     .quicklinks a {
       margin-left: 1rem;
-      color: #f4f4f4;
-      text-decoration: none;
-      transition: color 0.3s;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
 
     .quicklinks a:hover {
       color: #00ffff;
     }
 
+    /* Content */
     .content {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: rgba(0, 0, 0, 0.6);
+      max-width: 900px;
+      margin: 3rem auto;
       padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 0.8s ease-out;
     }
 
     #content-headers {
-      font-size: 1.8rem;
+      font-size: 2rem;
+      color: #00ffff;
       border-bottom: 2px solid #00ffff;
-      padding-bottom: 0.5rem;
       margin-bottom: 1rem;
+      padding-bottom: 0.3rem;
+    }
+
+    p, ul {
+      margin-bottom: 1rem;
+      line-height: 1.6;
     }
 
     ul li {
-      margin-bottom: 0.5rem;
+      margin-left: 1.2rem;
+      list-style: disc;
     }
 
-    .contacts a {
-      display: inline-block;
-      margin-right: 1rem;
-      margin-bottom: 0.5rem;
-      background: #00ffff;
-      color: #000;
-      padding: 0.3rem 0.6rem;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .contacts a:hover {
-      background: #00cccc;
-    }
-
-    .message {
+    /* Contacts */
+    .contacts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
       margin-top: 1rem;
-      font-style: italic;
-      color: #ccc;
     }
 
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #1e1e1e;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .contact-item:hover {
+      background: #2c2c2c;
+    }
+
+    .contact-item img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .contact-text {
+      font-weight: 600;
+    }
+
+    /* Badges */
     .badges {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin: 2rem auto;
-      max-width: 800px;
+      gap: 1rem;
+      margin: 3rem auto;
+      max-width: 900px;
     }
 
     .badges img {
-      margin: 5px;
+      height: 50px;
+      width: auto;
+      border-radius: 6px;
       border: 2px solid #fff;
-      border-radius: 4px;
-      transition: transform 0.2s ease-in-out;
+      transition: transform 0.3s, border-color 0.3s;
     }
 
     .badges img:hover {
-      transform: scale(1.1);
+      transform: scale(1.15);
       border-color: #00ffff;
+    }
+
+    /* Message */
+    .message {
+      margin-top: 2rem;
+      font-style: italic;
+      color: #ccc;
+      text-align: center;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -111,6 +161,7 @@
       <a href="mailto:pooms@pooms.dev">Email</a>
     </div>
   </div>
+
   <div class="content">
     <h3 id="content-headers">About:</h3>
     <p>Hello, I'm Pooms, a Minecraft server dev and computer hobbyist.</p>
@@ -121,22 +172,37 @@
       <li>Enjoy building cool tools and learning how stuff works</li>
       <li>I love macs...</li>
     </ul>
-    <div>
-      <h3 id="content-headers">Contact:</h3>
-        <img src="https://i.imgur.com/QK6FkVf.png" height=30 width=30> Master_Of_Pooms <br>
-        <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" height=30 width=30> PoomsXP <br>
-        <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" height=30 width=30> PoomsXP <br>
-        <img src="https://i.imgur.com/mCsUz9p.png" height=30 width=30> Master_of_pooms<br>
+
+    <h3 id="content-headers">Contact:</h3>
+    <div class="contacts">
+      <div class="contact-item">
+        <img src="https://i.imgur.com/QK6FkVf.png" alt="Discord">
+        <span class="contact-text">Master_Of_Pooms</span>
+      </div>
+      <div class="contact-item">
+        <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" alt="GitHub">
+        <span class="contact-text">PoomsXP</span>
+      </div>
+      <div class="contact-item">
+        <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" alt="YouTube">
+        <span class="contact-text">PoomsXP</span>
+      </div>
+      <div class="contact-item">
+        <img src="https://i.imgur.com/mCsUz9p.png" alt="Minecraft">
+        <span class="contact-text">Master_of_pooms</span>
+      </div>
     </div>
+
     <div class="message">
-      <a>(P.S. I'm probably working on something cool right now!)</a>
+      (P.S. I'm probably working on something cool right now!)
     </div>
   </div>
+
   <div class="badges">
     <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac"></a>
     <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft"></a>
-    <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" height=50 width=50></a>
-    <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" height=50 width=50></a>
+    <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code"></a>
+    <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential"></a>
   </div>
 </body>
 </html>

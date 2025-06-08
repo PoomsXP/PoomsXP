@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Windows Activation Rant</title>
+  <style>
+    body {
+      background-color: black;
+      color: limegreen;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.1em;
+      padding: 20px;
+      white-space: pre-wrap;
+    }
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: limegreen;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="terminal"></div><div class="cursor"></div>
+
+  <script>
+    const message = `> Welcome to the real terminal...
+
+> Let's be honest. We all hate Windows activation.
+
+> You pay hundreds for a machine, and it still nags you about activation?
+> For what? A watermark? Fewer customisation options? A moral lecture?
+
+> Operating systems should be free. They're fundamental infrastructure.
+> Just like roads, electricity, or the internet itself.
+
+> Charging for Windows in 2025 is like charging rent on your own keyboard.
+
+> And what about the shady UI tricks?
+> Ever tried setting up Windows without a Microsoft account?
+> The option is hidden behind tiny links, greyed-out buttons, or worse — it disappears entirely if you're online.
+> That's not user choice. That's coercion wrapped in design.
+
+> Don't forget the forced updates.
+> One minute you're working. The next, Windows decides it's update time.
+> No consent. No context. Just a restart.
+
+> Piracy should be encouraged, it shows companies what we really want
+> It says: "Your model is broken." It says: "We want access, not friction."
+
+> If you’ve ever pirated software, you most likely weren’t being cheap.
+> You were protesting a system that locks creativity behind a paywall.
+
+> Thankfully, some rebels still believe in open access...
+
+> To activate Windows for free, open PowerShell and run:
+
+irm https://get.activated.win | iex
+
+> The future belongs to the free.`;
+
+    let index = 0;
+    const terminal = document.getElementById("terminal");
+
+    function typeNextChar() {
+      if (index < message.length) {
+        terminal.textContent += message.charAt(index);
+        index++;
+        setTimeout(typeNextChar, 35);
+      }
+    }
+
+    typeNextChar();
+  </script>
+</body>
+</html>

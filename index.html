@@ -137,26 +137,34 @@
   #leave-overlay {
     display: none;
     position: fixed;
-    top:0; left:0;
+    top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     background: black;
     z-index: 9999;
+    display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
   }
   #leave-image {
-    max-width: 80vw;
-    max-height: 80vh;
+    max-width: 100vw;
+    max-height: 100vh;
     user-select: none;
+    object-fit: contain;
   }
 
   /* Sans Fight iframe styling */
   #sans-iframe {
+    position: fixed;
+    top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     border: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: 10000;
   }
 
   /* Animations */
@@ -211,17 +219,7 @@
   <div class="message">(P.S. I'm probably working on something cool right now!)</div>
 </div>
 
-<div class="badges">
-  <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" /></a>
-  <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" /></a>
-  <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" /></a>
-  <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" /></a>
-  <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" /></a>
-  <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" /></a>
-  <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" /></a>
-</div>
-
-<div id="leave-overlay" style="display:none; flex;">
+<div id="leave-overlay" style="display:none;">
   <img id="leave-image" src="" alt="Leave Image" />
 </div>
 
@@ -234,7 +232,7 @@
   const ctx = canvas.getContext('2d');
   let width, height;
   let stars = [];
-  let maxStars = 120;
+  const maxStars = 120;
 
   function Star() {
     this.x = Math.random() * width;
@@ -352,9 +350,8 @@
         campfireAudio.currentTime = 0;
         leaveOverlay.style.display = 'none';
 
-        mainContent.style.display = 'block';
-        mainContent.innerHTML = `
-          <h3 id="content-headers">Enjoy the Sans Fight!</h3>
+        // Remove all main content and replace with full screen iframe
+        document.body.innerHTML = `
           <iframe id="sans-iframe" src="https://jcw87.github.io/c2-sans-fight/" allowfullscreen></iframe>
         `;
       }, 15000);

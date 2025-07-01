@@ -15,10 +15,13 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #0b0c10;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
       color: #f0f0f0;
       min-height: 100vh;
+      background-attachment: fixed;
       overflow-x: hidden;
+      position: relative;
+      z-index: 0;
     }
 
     a {
@@ -26,40 +29,7 @@
       color: inherit;
     }
 
-    #constellation-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      background: #0b0c10;
-    }
-
-    #skull-screen {
-      display: none;
-      position: fixed;
-      z-index: 9999;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #skull-screen img {
-      max-width: 100%;
-      max-height: 100%;
-      animation: fadeInSkull 1.5s ease-in forwards;
-    }
-
-    @keyframes fadeInSkull {
-      from { opacity: 0; transform: scale(1.2); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
+    /* Header */
     .header {
       background: rgba(0, 0, 0, 0.75);
       display: flex;
@@ -68,6 +38,8 @@
       padding: 1rem 2rem;
       border-bottom: 1px solid #444;
       backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 1;
     }
 
     #webname {
@@ -86,6 +58,7 @@
       color: #00ffff;
     }
 
+    /* Content */
     .content {
       max-width: 900px;
       margin: 3rem auto;
@@ -95,6 +68,8 @@
       backdrop-filter: blur(8px);
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
       animation: fadeIn 0.8s ease-out;
+      position: relative;
+      z-index: 1;
     }
 
     #content-headers {
@@ -115,11 +90,14 @@
       list-style: disc;
     }
 
+    /* Contacts */
     .contacts {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1rem;
       margin-top: 1rem;
+      position: relative;
+      z-index: 1;
     }
 
     .contact-item {
@@ -145,6 +123,7 @@
       font-weight: 600;
     }
 
+    /* Badges */
     .badges {
       display: flex;
       flex-wrap: wrap;
@@ -152,6 +131,8 @@
       gap: 1rem;
       margin: 3rem auto;
       max-width: 900px;
+      position: relative;
+      z-index: 1;
     }
 
     .badges img {
@@ -167,26 +148,39 @@
       border-color: #00ffff;
     }
 
+    /* Message */
     .message {
       margin-top: 2rem;
       font-style: italic;
       color: #ccc;
       text-align: center;
+      position: relative;
+      z-index: 1;
     }
 
+    /* Animation */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Fullscreen overlay for skull & campfire */
+    #skull-screen {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: black;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      z-index: 99999;
+      justify-content: center;
+      align-items: center;
+      cursor: default;
+    }
   </style>
 </head>
 <body>
-  <canvas id="constellation-bg"></canvas>
-
-  <div id="skull-screen">
-    <img src="skull.gif" alt="You Died" />
-  </div>
-
   <div class="header">
     <a href="#" id="webname">pooms.dev</a>
     <div class="quicklinks">
@@ -237,86 +231,58 @@
     <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code"></a>
     <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential"></a>
     <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin"></a>
+    <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser"></a>
     <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows"></a>
   </div>
 
+  <!-- Fullscreen overlay -->
+  <div id="skull-screen"></div>
+
+  <!-- Audio elements (hidden) -->
   <audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
+  <audio id="campfire-audio" src="campfire.mp3" preload="auto" hidden loop></audio>
 
   <script>
-    // Constellation effect
-    const canvas = document.getElementById('constellation-bg');
-    const ctx = canvas.getContext('2d');
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-
-    let stars = Array.from({length: 100}, () => ({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      r: Math.random() * 1.5 + 0.5
-    }));
-
-    function animateStars() {
-      ctx.clearRect(0, 0, w, h);
-      stars.forEach((s, i) => {
-        s.x += s.vx;
-        s.y += s.vy;
-        if (s.x < 0 || s.x > w) s.vx *= -1;
-        if (s.y < 0 || s.y > h) s.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffffcc';
-        ctx.fill();
-
-        for (let j = i + 1; j < stars.length; j++) {
-          const dx = s.x - stars[j].x;
-          const dy = s.y - stars[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            ctx.strokeStyle = '#ffffff11';
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(s.x, s.y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.stroke();
-          }
-        }
-      });
-      requestAnimationFrame(animateStars);
-    }
-
-    animateStars();
-    window.addEventListener('resize', () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    });
-
-    // Audio unlock on first interaction
     let canPlayAudio = false;
-    const audio = document.getElementById('leave-audio');
+    let hasPlayedSkull = false;
+    const skullScreen = document.getElementById('skull-screen');
+    const leaveAudio = document.getElementById('leave-audio');
+    const campfireAudio = document.getElementById('campfire-audio');
+
+    // Unlock audio on first user interaction
     document.addEventListener('click', () => {
       if (!canPlayAudio) {
-        audio.muted = true;
-        audio.play().then(() => {
-          audio.pause();
-          audio.currentTime = 0;
-          audio.muted = false;
+        leaveAudio.muted = true;
+        leaveAudio.play().then(() => {
+          leaveAudio.pause();
+          leaveAudio.currentTime = 0;
+          leaveAudio.muted = false;
           canPlayAudio = true;
-        }).catch(() => {});
+          console.log("Audio unlocked.");
+        }).catch(err => console.warn("Audio unlock failed:", err));
       }
     });
 
-    // Before unload
-    let hasPlayedSkull = false;
     window.addEventListener('beforeunload', (e) => {
       if (canPlayAudio && !hasPlayedSkull) {
         e.preventDefault();
-        e.returnValue = '';
-        audio.play().catch(() => {});
-        document.getElementById('skull-screen').style.display = 'flex';
+        e.returnValue = ''; // Trigger confirmation dialog
+
+        // Show skull overlay and play leave audio
+        skullScreen.style.display = 'flex';
+        skullScreen.style.backgroundImage = "url('skull.gif')";
+        leaveAudio.play().catch(() => {});
+
         hasPlayedSkull = true;
+
+        // After 13 seconds, switch to campfire
+        setTimeout(() => {
+          skullScreen.style.backgroundImage = "url('campfire.gif')";
+          leaveAudio.pause();
+          leaveAudio.currentTime = 0;
+
+          campfireAudio.play().catch(() => {});
+        }, 13000);
       }
     });
   </script>

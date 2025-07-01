@@ -1,423 +1,367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pooms' Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    /* Reset & Basics */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pooms' Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* Reset & Basics */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    background: #0a0a20;
+    color: #f0f0f0;
+  }
 
-    html, body {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      color: #f0f0f0;
-      overflow-x: hidden;
-    }
+  /* Constellation background canvas */
+  #constellation-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -1;
+    background: #0a0a20;
+  }
 
-    /* Constellation Background Canvas */
-    canvas#constellation-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
-      display: block;
-    }
+  /* Main content */
+  #main-content {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 2rem;
+    border-radius: 16px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    animation: fadeIn 0.8s ease-out;
+    position: relative;
+    z-index: 1;
+  }
 
-    /* Header */
-    .header {
-      background: rgba(0, 0, 0, 0.75);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #444;
-      backdrop-filter: blur(10px);
-      position: relative;
-      z-index: 10;
-    }
+  /* Header */
+  .header {
+    background: rgba(0,0,0,0.75);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #444;
+    backdrop-filter: blur(10px);
+  }
+  #webname {
+    font-size: 1.8rem;
+    color: #00ffff;
+    font-weight: bold;
+  }
+  .quicklinks a {
+    margin-left: 1rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+    color: #f0f0f0;
+  }
+  .quicklinks a:hover {
+    color: #00ffff;
+  }
 
-    #webname {
-      font-size: 1.8rem;
-      color: #00ffff;
-      font-weight: bold;
-    }
+  /* Content headings */
+  #content-headers {
+    font-size: 2rem;
+    color: #00ffff;
+    border-bottom: 2px solid #00ffff;
+    margin-bottom: 1rem;
+    padding-bottom: 0.3rem;
+  }
 
-    .quicklinks a {
-      margin-left: 1rem;
-      font-weight: 600;
-      transition: color 0.3s ease;
-      color: inherit;
-    }
+  /* Contact items */
+  .contacts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: #1e1e1e;
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+  }
+  .contact-item:hover {
+    background: #2c2c2c;
+  }
+  .contact-item img {
+    width: 30px;
+    height: 30px;
+  }
+  .contact-text {
+    font-weight: 600;
+  }
 
-    .quicklinks a:hover {
-      color: #00ffff;
-    }
+  /* Badges */
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 3rem auto;
+    max-width: 900px;
+  }
+  .badges img {
+    height: 50px;
+    width: auto;
+    border-radius: 6px;
+    border: 2px solid #fff;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .badges img:hover {
+    transform: scale(1.15);
+    border-color: #00ffff;
+  }
 
-    /* Content */
-    .content {
-      max-width: 900px;
-      margin: 3rem auto;
-      padding: 2rem;
-      border-radius: 16px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
-      animation: fadeIn 0.8s ease-out;
-      position: relative;
-      z-index: 10;
-      min-height: 400px;
-    }
+  /* Message */
+  .message {
+    margin-top: 2rem;
+    font-style: italic;
+    color: #ccc;
+    text-align: center;
+  }
 
-    #content-headers {
-      font-size: 2rem;
-      color: #00ffff;
-      border-bottom: 2px solid #00ffff;
-      margin-bottom: 1rem;
-      padding-bottom: 0.3rem;
-    }
+  /* Leave overlay */
+  #leave-overlay {
+    display: none;
+    position: fixed;
+    top:0; left:0;
+    width: 100vw;
+    height: 100vh;
+    background: black;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  #leave-image {
+    max-width: 80vw;
+    max-height: 80vh;
+    user-select: none;
+  }
 
-    p, ul {
-      margin-bottom: 1rem;
-      line-height: 1.6;
-    }
+  /* Sans Fight iframe styling */
+  #sans-iframe {
+    width: 100vw;
+    height: 100vh;
+    border: none;
+  }
 
-    ul li {
-      margin-left: 1.2rem;
-      list-style: disc;
-    }
-
-    /* Contacts */
-    .contacts {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: #1e1e1e;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-    }
-
-    .contact-item:hover {
-      background: #2c2c2c;
-    }
-
-    .contact-item img {
-      width: 30px;
-      height: 30px;
-    }
-
-    .contact-text {
-      font-weight: 600;
-    }
-
-    /* Badges */
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin: 3rem auto;
-      max-width: 900px;
-      position: relative;
-      z-index: 10;
-    }
-
-    .badges img {
-      height: 50px;
-      width: auto;
-      border-radius: 6px;
-      border: 2px solid #fff;
-      transition: transform 0.3s, border-color 0.3s;
-    }
-
-    .badges img:hover {
-      transform: scale(1.15);
-      border-color: #00ffff;
-    }
-
-    /* Message */
-    .message {
-      margin-top: 2rem;
-      font-style: italic;
-      color: #ccc;
-      text-align: center;
-    }
-
-    /* Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Fullscreen overlay for skull and campfire */
-    #leave-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      color: #fff;
-      text-align: center;
-    }
-
-    #leave-overlay img {
-      max-width: 80vw;
-      max-height: 80vh;
-      user-select: none;
-      pointer-events: none;
-    }
-
-    /* iframe styles */
-    #sans-iframe {
-      width: 100%;
-      height: 600px;
-      border: none;
-      border-radius: 16px;
-      margin-top: 1rem;
-    }
-  </style>
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 </head>
 <body>
-  <canvas id="constellation-bg"></canvas>
+<canvas id="constellation-canvas"></canvas>
 
-  <div class="header">
-    <a href="#" id="webname">pooms.dev</a>
-    <div class="quicklinks">
-      <a href="https://github.com/PoomsXP">GitHub</a>
-      <a href="mailto:pooms@pooms.dev">Email</a>
+<div class="header">
+  <a href="#" id="webname">pooms.dev</a>
+  <div class="quicklinks">
+    <a href="https://github.com/PoomsXP">GitHub</a>
+    <a href="mailto:pooms@pooms.dev">Email</a>
+  </div>
+</div>
+
+<div id="main-content">
+  <h3 id="content-headers">About:</h3>
+  <p>Hello, I'm Pooms, a Minecraft server dev and computer hobbyist.</p>
+  <p>Here's a bit about me:</p>
+  <ul>
+    <li>Experienced with Minecraft server administration and plugins</li>
+    <li>Self-taught programmer and general tinkerer</li>
+    <li>Enjoy building cool tools and learning how stuff works</li>
+    <li>I love macs...</li>
+  </ul>
+
+  <h3 id="content-headers">Contact:</h3>
+  <div class="contacts">
+    <div class="contact-item">
+      <img src="https://i.imgur.com/kAOFwQD.png" alt="Discord" />
+      <span class="contact-text">Master_Of_Pooms</span>
+    </div>
+    <div class="contact-item">
+      <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" alt="GitHub" />
+      <span class="contact-text">PoomsXP</span>
+    </div>
+    <div class="contact-item">
+      <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" alt="YouTube" />
+      <span class="contact-text">PoomsXP</span>
+    </div>
+    <div class="contact-item">
+      <img src="https://i.imgur.com/mCsUz9p.png" alt="Minecraft" />
+      <span class="contact-text">Master_Of_Pooms</span>
     </div>
   </div>
 
-  <div class="content" id="main-content">
-    <h3 id="content-headers">About:</h3>
-    <p>Hello, I'm Pooms, a Minecraft server dev and computer hobbyist.</p>
-    <p>Here's a bit about me:</p>
-    <ul>
-      <li>Experienced with Minecraft server administration and plugins</li>
-      <li>Self-taught programmer and general tinkerer</li>
-      <li>Enjoy building cool tools and learning how stuff works</li>
-      <li>I love macs...</li>
-    </ul>
+  <div class="message">(P.S. I'm probably working on something cool right now!)</div>
+</div>
 
-    <h3 id="content-headers">Contact:</h3>
-    <div class="contacts">
-      <div class="contact-item">
-        <img src="https://i.imgur.com/kAOFwQD.png" alt="Discord" />
-        <span class="contact-text">Master_Of_Pooms</span>
-      </div>
-      <div class="contact-item">
-        <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" alt="GitHub" />
-        <span class="contact-text">PoomsXP</span>
-      </div>
-      <div class="contact-item">
-        <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" alt="YouTube" />
-        <span class="contact-text">PoomsXP</span>
-      </div>
-      <div class="contact-item">
-        <img src="https://i.imgur.com/mCsUz9p.png" alt="Minecraft" />
-        <span class="contact-text">Master_Of_Pooms</span>
-      </div>
-    </div>
+<div class="badges">
+  <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" /></a>
+  <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" /></a>
+  <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" /></a>
+  <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" /></a>
+  <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" /></a>
+  <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" /></a>
+  <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" /></a>
+</div>
 
-    <div class="message">(P.S. I'm probably working on something cool right now!)</div>
-  </div>
+<div id="leave-overlay" style="display:none; flex;">
+  <img id="leave-image" src="" alt="Leave Image" />
+</div>
 
-  <div class="badges">
-    <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" /></a>
-    <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" /></a>
-    <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" /></a>
-    <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" /></a>
-    <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" /></a>
-    <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" /></a>
-    <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" /></a>
-  </div>
-
-  <div id="leave-overlay" style="display:none; flex;">
-    <img id="leave-image" src="" alt="Leave Image" />
-  </div>
-
-  <audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
-  <audio id="campfire-audio" src="campfire.mp3" preload="auto" loop hidden></audio>
-  <audio id="creepy-voice" src="creepy-voice.mp3" preload="auto" hidden></audio>
+<audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
+<audio id="campfire-audio" src="campfire.mp3" preload="auto" loop hidden></audio>
 
 <script>
-  // Constellations animation code
-  (() => {
-    const canvas = document.getElementById('constellation-bg');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let stars = [];
-    const starCount = 120;
-    const maxDist = 120;
+  // Constellation background effect
+  const canvas = document.getElementById('constellation-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+  let stars = [];
+  let maxStars = 120;
 
-    function init() {
-      resize();
-      stars = [];
-      for(let i = 0; i < starCount; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          radius: Math.random() * 1.2 + 0.3
-        });
-      }
-      requestAnimationFrame(update);
+  function Star() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.radius = Math.random() * 1.1 + 0.2;
+    this.vx = (Math.random() - 0.5) * 0.2;
+    this.vy = (Math.random() - 0.5) * 0.2;
+    this.opacity = Math.random();
+    this.opacityChange = (Math.random() * 0.02) + 0.005;
+  }
+  Star.prototype.update = function() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x < 0 || this.x > width) this.vx *= -1;
+    if(this.y < 0 || this.y > height) this.vy *= -1;
+
+    this.opacity += this.opacityChange;
+    if(this.opacity <= 0 || this.opacity >= 1) this.opacityChange *= -1;
+  }
+  Star.prototype.draw = function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+    ctx.fill();
+  }
+
+  function initStars() {
+    stars = [];
+    for(let i=0; i<maxStars; i++) {
+      stars.push(new Star());
     }
+  }
 
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    }
-
-    function update() {
-      ctx.clearRect(0, 0, width, height);
-      // Move stars
-      stars.forEach(s => {
-        s.x += s.vx;
-        s.y += s.vy;
-        if(s.x < 0 || s.x > width) s.vx *= -1;
-        if(s.y < 0 || s.y > height) s.vy *= -1;
-      });
-
-      // Draw stars
-      stars.forEach(s => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#00ffff';
-        ctx.shadowColor = '#00ffff';
-        ctx.shadowBlur = 8;
-        ctx.fill();
-      });
-
-      // Draw lines
-      for(let i = 0; i < starCount; i++) {
-        for(let j = i + 1; j < starCount; j++) {
-          let dx = stars[i].x - stars[j].x;
-          let dy = stars[i].y - stars[j].y;
-          let dist = Math.sqrt(dx*dx + dy*dy);
-          if(dist < maxDist) {
-            ctx.strokeStyle = 'rgba(0,255,255,' + (1 - dist / maxDist) + ')';
-            ctx.lineWidth = 0.7;
-            ctx.beginPath();
-            ctx.moveTo(stars[i].x, stars[i].y);
-            ctx.lineTo(stars[j].x, stars[j].y);
-            ctx.stroke();
-          }
+  function connectStars() {
+    for(let i=0; i<stars.length; i++) {
+      for(let j=i+1; j<stars.length; j++) {
+        let dx = stars[i].x - stars[j].x;
+        let dy = stars[i].y - stars[j].y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
+        if(dist < 150) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(255,255,255,${(1 - dist/150)*0.2})`;
+          ctx.lineWidth = 1;
+          ctx.moveTo(stars[i].x, stars[i].y);
+          ctx.lineTo(stars[j].x, stars[j].y);
+          ctx.stroke();
         }
       }
-      requestAnimationFrame(update);
     }
+  }
 
-    window.addEventListener('resize', resize);
-    init();
-  })();
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    stars.forEach(star => {
+      star.update();
+      star.draw();
+    });
+    connectStars();
+    requestAnimationFrame(animate);
+  }
 
-  // Audio unlocking on first interaction
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+    initStars();
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  animate();
+
+  // Audio unlock on first user interaction
   let canPlayAudio = false;
   const leaveAudio = document.getElementById('leave-audio');
   const campfireAudio = document.getElementById('campfire-audio');
-  const creepyVoice = document.getElementById('creepy-voice');
+  const leaveOverlay = document.getElementById('leave-overlay');
+  const leaveImage = document.getElementById('leave-image');
+  const mainContent = document.getElementById('main-content');
 
   document.addEventListener('click', () => {
     if (!canPlayAudio) {
-      // Play muted to unlock audio
       leaveAudio.muted = true;
       leaveAudio.play().then(() => {
         leaveAudio.pause();
         leaveAudio.currentTime = 0;
         leaveAudio.muted = false;
-
-        campfireAudio.muted = true;
-        campfireAudio.play().then(() => {
-          campfireAudio.pause();
-          campfireAudio.currentTime = 0;
-          campfireAudio.muted = false;
-
-          creepyVoice.muted = true;
-          creepyVoice.play().then(() => {
-            creepyVoice.pause();
-            creepyVoice.currentTime = 0;
-            creepyVoice.muted = false;
-
-            canPlayAudio = true;
-            console.log("Audio unlocked.");
-          });
-        });
-      }).catch(e => console.warn("Audio unlock error:", e));
+        canPlayAudio = true;
+        console.log("Audio unlocked.");
+      }).catch(e => console.warn("Audio unlock failed:", e));
     }
   });
 
-  // Show leave overlay, play audios, handle sequence
-  let leaveOverlay = document.getElementById('leave-overlay');
-  let leaveImage = document.getElementById('leave-image');
-  let mainContent = document.getElementById('main-content');
-
   window.addEventListener('beforeunload', (e) => {
-    if (!canPlayAudio) return; // Don't run if audio not unlocked yet
+    if (!canPlayAudio) return;
 
-    // Show the confirm dialog
     e.preventDefault();
     e.returnValue = '';
 
-    // Play creepy voice audio and show skull gif
     leaveOverlay.style.display = 'flex';
     leaveImage.src = 'skull.gif';
-    mainContent.style.display = 'none'; // Hide main content
+    mainContent.style.display = 'none';
 
-    creepyVoice.play();
+    leaveAudio.play();
 
-    // Play leaveAudio (leavingsosoon.mp3) for the "Leaving so soon?" voice if you want, otherwise remove
-
-    // After 13 seconds, switch to campfire gif + campfire audio loop
     setTimeout(() => {
       leaveImage.src = 'campfire.gif';
-      creepyVoice.pause();
-      creepyVoice.currentTime = 0;
+      leaveAudio.pause();
+      leaveAudio.currentTime = 0;
       campfireAudio.play();
 
-      // After 20 seconds on campfire, embed the Sans Fight page
       setTimeout(() => {
         campfireAudio.pause();
         campfireAudio.currentTime = 0;
         leaveOverlay.style.display = 'none';
 
-        // Replace main content with iframe
         mainContent.style.display = 'block';
         mainContent.innerHTML = `
           <h3 id="content-headers">Enjoy the Sans Fight!</h3>
           <iframe id="sans-iframe" src="https://jcw87.github.io/c2-sans-fight/" allowfullscreen></iframe>
         `;
-      }, 20000);
+      }, 15000);
     }, 13000);
 
-    // Returning null here prevents default unload, forcing user confirmation
     return null;
   });
-
 </script>
 </body>
 </html>

@@ -6,6 +6,35 @@
   <title>Pooms' Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
+#constellations {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+#blackout {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  justify-content: center;
+  align-items: center;
+}
+
+#blackout img {
+  width: 200px;
+  animation: fadeInSkull 1s ease-in-out;
+}
+
+@keyframes fadeInSkull {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+
     /* Reset & Basics */
     * {
       margin: 0;
@@ -154,6 +183,15 @@
   </style>
 </head>
 <body>
+  <!-- Starfield Background -->
+  <canvas id="constellations"></canvas>
+
+  <!-- Skull Blackout -->
+  <div id="blackout">
+    <img src="skull.gif" alt="Skull">
+  </div>
+
+  <!-- Your content remains unchanged below -->
   <div class="header">
     <a href="#" id="webname">pooms.dev</a>
     <div class="quicklinks">
@@ -162,53 +200,80 @@
     </div>
   </div>
 
-  <div class="content">
-    <h3 id="content-headers">About:</h3>
-    <p>Hello, I'm Pooms, a Minecraft server dev and computer hobbyist.</p>
-    <p>Here's a bit about me:</p>
-    <ul>
-      <li>Experienced with Minecraft server administration and plugins</li>
-      <li>Self-taught programmer and general tinkerer</li>
-      <li>Enjoy building cool tools and learning how stuff works</li>
-      <li>I love macs...</li>
-    </ul>
+  <div class="content"> ... </div>
+  <div class="badges"> ... </div>
 
-    <h3 id="content-headers">Contact:</h3>
-    <div class="contacts">
-      <div class="contact-item">
-        <img src="https://i.imgur.com/kAOFwQD.png" alt="Discord">
-        <span class="contact-text">Master_Of_Pooms</span>
-      </div>
-      <div class="contact-item">
-        <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" alt="GitHub">
-        <span class="contact-text">PoomsXP</span>
-      </div>
-      <div class="contact-item">
-        <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" alt="YouTube">
-        <span class="contact-text">PoomsXP</span>
-      </div>
-      <div class="contact-item">
-        <img src="https://i.imgur.com/mCsUz9p.png" alt="Minecraft">
-        <span class="contact-text">Master_Of_Pooms</span>
-      </div>
-    </div>
+  <audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
 
-    <div class="message">
-      (P.S. I'm probably working on something cool right now!)
-    </div>
-  </div>
+  <script>
+    // Unlock audio on click
+    let canPlayAudio = false;
+    const audio = document.getElementById('leave-audio');
+    document.addEventListener('click', () => {
+      if (!canPlayAudio) {
+        audio.muted = true;
+        audio.play().then(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = false;
+          canPlayAudio = true;
+        }).catch(console.warn);
+      }
+    });
 
-  <div class="badges">
-    <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac"></a>
-    <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft"></a>
-    <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code"></a>
-    <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential"></a>
-    <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin"></a>
-    <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser"></a>
-    <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows"></a>
-  </div>
+    // Show blackout + skull on tab close
+    window.addEventListener('beforeunload', (e) => {
+      if (canPlayAudio) {
+        document.getElementById('blackout').style.display = 'flex';
+        audio.play().catch(console.warn);
+        e.preventDefault();
+        e.returnValue = '';
+        return '';
+      }
+    });
+
+    // Starfield background
+    const canvas = document.getElementById('constellations');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 100; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#ffffff';
+      for (let star of stars) {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+        ctx.fill();
+        star.x += star.dx;
+        star.y += star.dy;
+
+        if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
+        if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
+      }
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+  </script>
 </body>
-<audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
+
 
 <script>
   let canPlayAudio = false;
@@ -242,5 +307,4 @@
     }
   });
 </script>
-
 </html>

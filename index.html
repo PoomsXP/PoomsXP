@@ -208,4 +208,39 @@
     <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows"></a>
   </div>
 </body>
+<audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
+
+<script>
+  let canPlayAudio = false;
+  const audio = document.getElementById('leave-audio');
+
+  // Unlock audio playback on first user interaction
+  document.addEventListener('click', () => {
+    if (!canPlayAudio) {
+      audio.muted = true;
+      audio.play().then(() => {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.muted = false;
+        canPlayAudio = true;
+        console.log("Audio unlocked.");
+      }).catch(err => console.warn("Audio unlock failed:", err));
+    }
+  });
+
+  // Play audio and show confirmation dialog when leaving
+  window.addEventListener('beforeunload', (e) => {
+    if (canPlayAudio) {
+      try {
+        audio.play();
+      } catch (err) {
+        console.warn("Audio play failed on unload:", err);
+      }
+      e.preventDefault();
+      e.returnValue = '';
+      return '';
+    }
+  });
+</script>
+
 </html>

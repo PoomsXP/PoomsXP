@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pooms' Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet" />
-
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
-    /* Reset & Basics */
     * {
       margin: 0;
       padding: 0;
@@ -18,11 +17,19 @@
       height: 100%;
       overflow: hidden;
       font-family: 'Inter', sans-serif;
-      background: #000; /* fallback */
+      background: #000;
       color: #f0f0f0;
+      scroll-behavior: smooth;
     }
 
-    /* Constellation Canvas */
+    body::-webkit-scrollbar {
+      width: 10px;
+    }
+    body::-webkit-scrollbar-thumb {
+      background-color: #00ffff;
+      border-radius: 8px;
+    }
+
     #constellation-canvas {
       position: fixed;
       top: 0; left: 0;
@@ -33,7 +40,6 @@
       display: block;
     }
 
-    /* Page container on top of canvas */
     #page-container {
       position: relative;
       z-index: 1;
@@ -42,7 +48,6 @@
       background: transparent;
     }
 
-    /* Overlay for skull or campfire */
     #overlay {
       position: fixed;
       top: 0; left: 0;
@@ -54,7 +59,6 @@
       display: none;
     }
 
-    /* Your existing styles for header, content, badges, etc */
     .header {
       background: rgba(0, 0, 0, 0.75);
       display: flex;
@@ -65,10 +69,27 @@
       backdrop-filter: blur(10px);
     }
 
+    @media (max-width: 600px) {
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .quicklinks a {
+        margin: 0.5rem 0;
+      }
+    }
+
     #webname {
       font-size: 1.8rem;
       color: #00ffff;
       font-weight: bold;
+      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff;
+      animation: neonPulse 1.8s infinite alternate;
+    }
+
+    @keyframes neonPulse {
+      from { text-shadow: 0 0 8px #0ff, 0 0 16px #0ff; }
+      to { text-shadow: 0 0 4px #0ff, 0 0 6px #0ff; }
     }
 
     .quicklinks a {
@@ -76,7 +97,6 @@
       font-weight: 600;
       transition: color 0.3s ease;
     }
-
     .quicklinks a:hover {
       color: #00ffff;
     }
@@ -84,7 +104,7 @@
     .content {
       max-width: 900px;
       margin: 3rem auto;
-      padding: 2rem;
+      padding: 2rem 1.5rem;
       border-radius: 16px;
       background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(8px);
@@ -140,6 +160,15 @@
       font-weight: 600;
     }
 
+    .contact-text a {
+      color: #f0f0f0;
+      text-decoration: none;
+    }
+
+    .contact-text a:hover {
+      color: #00ffff;
+    }
+
     .badges {
       display: flex;
       flex-wrap: wrap;
@@ -169,6 +198,21 @@
       text-align: center;
     }
 
+    .scroll-hint {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      font-size: 1rem;
+      color: #888;
+      animation: fadeHint 2s infinite ease-in-out;
+    }
+
+    @keyframes fadeHint {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
@@ -176,11 +220,7 @@
   </style>
 </head>
 <body>
-
-  <!-- Constellation background -->
   <canvas id="constellation-canvas"></canvas>
-
-  <!-- Page content -->
   <div id="page-container">
     <div class="header">
       <a href="#" id="webname">pooms.dev</a>
@@ -189,7 +229,7 @@
         <a href="mailto:pooms@pooms.dev">Email</a>
       </div>
     </div>
-
+    <div class="scroll-hint">↓ Scroll down</div>
     <div class="content">
       <h3 id="content-headers">About:</h3>
       <p>Hello, I'm Pooms, a Minecraft server dev and computer hobbyist.</p>
@@ -205,45 +245,38 @@
       <div class="contacts">
         <div class="contact-item">
           <img src="https://i.imgur.com/kAOFwQD.png" alt="Discord" />
-          <span class="contact-text">Master_Of_Pooms</span>
+          <span class="contact-text"><a href="https://discord.com/users/" target="_blank">Master_Of_Pooms</a></span>
         </div>
         <div class="contact-item">
           <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" alt="GitHub" />
-          <span class="contact-text">PoomsXP</span>
+          <span class="contact-text"><a href="https://github.com/PoomsXP" target="_blank">PoomsXP</a></span>
         </div>
         <div class="contact-item">
           <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" alt="YouTube" />
-          <span class="contact-text">PoomsXP</span>
+          <span class="contact-text"><a href="#" target="_blank">PoomsXP</a></span>
         </div>
         <div class="contact-item">
           <img src="https://i.imgur.com/mCsUz9p.png" alt="Minecraft" />
           <span class="contact-text">Master_Of_Pooms</span>
         </div>
       </div>
-
       <div class="message">(P.S. I'm probably working on something cool right now!)</div>
     </div>
-
     <div class="badges">
-      <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" /></a>
-      <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" /></a>
-      <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" /></a>
-      <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" /></a>
-      <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" /></a>
-      <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" /></a>
-      <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" /></a>
+      <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" loading="lazy" /></a>
+      <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" loading="lazy" /></a>
+      <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" loading="lazy" /></a>
+      <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" loading="lazy" /></a>
+      <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" loading="lazy" /></a>
+      <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" loading="lazy" /></a>
+      <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" loading="lazy" /></a>
     </div>
   </div>
-
-  <!-- Overlay for skull and campfire -->
   <div id="overlay"></div>
-
-  <!-- Audios hidden -->
   <audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
   <audio id="campfire-audio" src="campfire.mp3" preload="auto" loop hidden></audio>
-
-  <script>
-    // Constellation background adapted from a common pattern
+  <script defer>
+        // Constellation background adapted from a common pattern
     (() => {
       const canvas = document.getElementById('constellation-canvas');
       const ctx = canvas.getContext('2d');
@@ -354,18 +387,10 @@
       if (canPlayAudio && !isClosingSequence) {
         isClosingSequence = true;
 
-        // Show skull overlay
-        overlay.style.backgroundImage = "url('skull.gif')";
-        overlay.style.display = "block";
 
         // Play leave audio
         audio.play().catch(() => {});
 
-        // After 13 seconds switch to campfire overlay and audio loop
-        setTimeout(() => {
-          overlay.style.backgroundImage = "url('campfire.gif')";
-          campfireAudio.play().catch(() => {});
-        }, 13000);
 
         // Show popup message on close (standard)
         e.preventDefault();

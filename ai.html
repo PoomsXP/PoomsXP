@@ -52,18 +52,76 @@
 
       const prompt = `You are a professional web designer.
 
-Your task is to create a complete single-file HTML5 website for a fictional small business.
+Your task is to create a completely original, single-file business website in full HTML. Every time this is run, it must be for a different fictional business idea, name, layout, and visual style.
 
-⚠️ Rules you must follow:
-- Always use a unique idea for the business every time — no repeats, no templates.
-- Never reuse a name, design, layout, structure, or colour scheme from any prior site.
-- Never create food-related businesses (no bakeries, cafés, patisseries, cheese shops, restaurants, etc).
-- Never use names like "Luminous", "Galactic Getaways", "GreenTech Solutions", or anything similar.
-- Always pick a new, believable industry (e.g., accounting, tutoring, plumbing, law, electronics repair, pet grooming, architecture, etc).
-- Design the website completely differently every single time — never reuse anything.
-- Use all original HTML5. Include CSS in a <style> tag inside <head>. Include JS in a <script> tag at the bottom of <body>.
-- Make the layout clean, responsive, and modern using best practices.
-- Output ONLY valid HTML starting with <!DOCTYPE html>. Do NOT include markdown, code blocks, filenames, or explanations.`;
+Follow these strict requirements:
+
+---
+
+🆕 BUSINESS CONCEPT:
+- Invent a **unique business** idea that has not been used before.
+- The business must be **plausible and professional** (no fantasy, no space travel, no cheese museums).
+- Use a **unique, realistic business name** that does not include:
+  "Galactic", "GreenTech", "Ridgeview", "Briarwood", "Ravenna", "Casa de Fiori", "Luminous", "Riverview", or any overused names.
+- Never repeat a business concept or name from previous outputs.
+
+💡 Example ideas (for variation):
+  - Mobile phone repair shop
+  - Dog grooming salon
+  - Boutique marketing agency
+  - Art supply store
+  - Home renovation contractor
+  - Surf school
+  - B2B logistics startup
+  - Personal finance coach
+  - Local café with a co-working space
+  - Tattoo studio
+
+---
+
+🎨 DESIGN:
+- Every time, use a **completely different layout, visual style, colour scheme, and structure**.
+- Designs must be modern, mobile-responsive, and look like something a real business would use.
+- Embed all **CSS in a `<style>` tag** in the `<head>`.
+- Embed all **JavaScript in a `<script>` tag** at the bottom of the `<body>`.
+- Do not use the same sections or text structure as previous outputs.
+- Include meaningful placeholder content — not "Lorem ipsum".
+
+📸 IMAGES:
+- Do **not** generate fake image URLs or imaginary stock photos.
+- Instead, use placeholder image services like:
+  `https://placehold.co/600x400?text=Image+Description`
+- Add descriptive `alt` text for each image.
+- Only include images that fit the business and page context.
+
+---
+
+🧾 CONTENT:
+- Include a homepage hero or welcome section.
+- Add 2–3 business-specific sections such as:
+  - Services
+  - Testimonials
+  - Team
+  - Portfolio
+  - Booking or contact form
+- Footer should have contact info or fake social links.
+- Text should sound natural and professional.
+
+---
+
+🚫 NEVER INCLUDE:
+- Markdown formatting
+- Code fences (like ```html)
+- Explanations or descriptions
+- Image URLs that are broken or imaginary
+- Reused layouts, section names, or fake names from earlier outputs
+
+---
+
+📄 OUTPUT FORMAT:
+Output a **single valid HTML5 document**, starting with `<!DOCTYPE html>` and ending with `</html>`. The page must run standalone in a browser.
+
+`;
 
 
 

@@ -3,10 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pooms' Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&family=Inter:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Pooms' Portfolio | Minecraft Developer & Tech Enthusiast</title>
+  <meta name="description" content="Pooms' personal portfolio showcasing Minecraft development projects, coding skills, and tech interests.">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
+    :root {
+      --primary: #00ffff;
+      --primary-dark: #00c8c8;
+      --secondary: #ff00ff;
+      --bg-dark: #0a0a0a;
+      --bg-light: #1a1a1a;
+      --text-light: #f0f0f0;
+      --text-muted: #888;
+      --border-radius: 12px;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -15,28 +29,34 @@
 
     html, body {
       height: 100%;
-      overflow: hidden;
+      overflow-x: hidden;
       font-family: 'Inter', sans-serif;
-      background: #000;
-      color: #f0f0f0;
+      background: var(--bg-dark);
+      color: var(--text-light);
       scroll-behavior: smooth;
+      line-height: 1.6;
     }
 
     body::-webkit-scrollbar {
       width: 10px;
     }
+    body::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
     body::-webkit-scrollbar-thumb {
-      background-color: #00ffff;
+      background-color: var(--primary);
       border-radius: 8px;
+      border: 2px solid var(--bg-dark);
     }
 
     #constellation-canvas {
       position: fixed;
-      top: 0; left: 0;
+      top: 0; 
+      left: 0;
       width: 100vw;
       height: 100vh;
       z-index: 0;
-      background: #000;
+      background: var(--bg-dark);
       display: block;
     }
 
@@ -46,114 +66,195 @@
       overflow-y: auto;
       height: 100vh;
       background: transparent;
+      scroll-snap-type: y proximity;
     }
 
-    #overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black no-repeat center center;
-      background-size: contain;
-      z-index: 9999;
-      display: none;
+    section {
+      scroll-snap-align: start;
     }
 
     .header {
-      background: rgba(0, 0, 0, 0.75);
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.85);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      border-bottom: 1px solid #444;
-      backdrop-filter: blur(10px);
+      padding: 1.2rem 2.5rem;
+      border-bottom: 1px solid rgba(68, 68, 68, 0.3);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      transition: var(--transition);
     }
 
-    @media (max-width: 600px) {
+    .header.scrolled {
+      padding: 0.8rem 2rem;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (max-width: 768px) {
       .header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        padding: 1rem;
+      }
+      .header.scrolled {
+        padding: 0.8rem 1rem;
+      }
+      .quicklinks {
+        margin-top: 0.8rem;
       }
       .quicklinks a {
-        margin: 0.5rem 0;
+        margin: 0 0.5rem;
       }
     }
 
     #webname {
       font-size: 1.8rem;
-      color: #00ffff;
-      font-weight: bold;
-      text-shadow: 0 0 8px #0ff, 0 0 16px #0ff;
+      font-weight: 700;
+      color: var(--primary);
+      text-shadow: 0 0 8px var(--primary), 0 0 16px var(--primary);
       animation: neonPulse 1.8s infinite alternate;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+
+    #webname:hover {
+      text-shadow: 0 0 12px var(--primary), 0 0 24px var(--primary);
     }
 
     @keyframes neonPulse {
-      from { text-shadow: 0 0 8px #0ff, 0 0 16px #0ff; }
-      to { text-shadow: 0 0 4px #0ff, 0 0 6px #0ff; }
+      from { text-shadow: 0 0 8px var(--primary), 0 0 16px var(--primary); }
+      to { text-shadow: 0 0 4px var(--primary), 0 0 8px var(--primary); }
+    }
+
+    .quicklinks {
+      display: flex;
+      gap: 1.5rem;
     }
 
     .quicklinks a {
-      margin-left: 1rem;
+      color: var(--text-light);
       font-weight: 600;
-      transition: color 0.3s ease;
+      text-decoration: none;
+      transition: var(--transition);
+      position: relative;
+      padding: 0.3rem 0;
     }
+
+    .quicklinks a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: var(--transition);
+    }
+
     .quicklinks a:hover {
-      color: #00ffff;
+      color: var(--primary);
     }
 
-    .content {
-      max-width: 900px;
+    .quicklinks a:hover::after {
+      width: 100%;
+    }
+
+    .content-section {
+      max-width: 1000px;
       margin: 3rem auto;
-      padding: 2rem 1.5rem;
-      border-radius: 16px;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      background: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--box-shadow);
       animation: fadeIn 0.8s ease-out;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
     }
 
-    #content-headers {
-      font-size: 2rem;
-      color: #00ffff;
-      border-bottom: 2px solid #00ffff;
-      margin-bottom: 1rem;
-      padding-bottom: 0.3rem;
+    .content-section:hover {
+      border-color: rgba(0, 255, 255, 0.2);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-header {
+      font-size: 2.2rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-header::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      border-radius: 3px;
     }
 
     p, ul {
-      margin-bottom: 1rem;
-      line-height: 1.6;
+      margin-bottom: 1.2rem;
+      font-size: 1.1rem;
+    }
+
+    ul {
+      padding-left: 1.5rem;
     }
 
     ul li {
-      margin-left: 1.2rem;
-      list-style: disc;
+      margin-bottom: 0.6rem;
+      list-style-type: none;
+      position: relative;
     }
 
-    .contacts {
+    ul li::before {
+      content: '▹';
+      position: absolute;
+      left: -1.5rem;
+      color: var(--primary);
+    }
+
+    .contacts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
     }
 
-    .contact-item {
+    .contact-card {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
-      background: #1e1e1e;
-      padding: 0.7rem 1rem;
-      border-radius: 8px;
-      transition: background 0.3s ease;
+      gap: 1rem;
+      background: rgba(30, 30, 30, 0.7);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
-    .contact-item:hover {
-      background: #2c2c2c;
+    .contact-card:hover {
+      background: rgba(44, 44, 44, 0.8);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 255, 255, 0.1);
+      border-color: rgba(0, 255, 255, 0.2);
     }
 
-    .contact-item img {
-      width: 30px;
-      height: 30px;
+    .contact-card img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      filter: grayscale(30%);
+      transition: var(--transition);
+    }
+
+    .contact-card:hover img {
+      filter: grayscale(0%) brightness(1.2);
     }
 
     .contact-text {
@@ -161,132 +262,253 @@
     }
 
     .contact-text a {
-      color: #f0f0f0;
+      color: var(--text-light);
       text-decoration: none;
+      transition: var(--transition);
+      display: inline-block;
     }
 
     .contact-text a:hover {
-      color: #00ffff;
+      color: var(--primary);
+      transform: translateX(3px);
     }
 
-    .badges {
+    .badges-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 1rem;
+      gap: 1.5rem;
       margin: 3rem auto;
-      max-width: 900px;
+      max-width: 1000px;
+      padding: 0 2rem;
     }
 
-    .badges img {
-      height: 50px;
+    .badge {
+      height: 60px;
       width: auto;
-      border-radius: 6px;
-      border: 2px solid #fff;
-      transition: transform 0.3s, border-color 0.3s;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+      filter: grayscale(20%) brightness(0.9);
     }
 
-    .badges img:hover {
-      transform: scale(1.15);
-      border-color: #00ffff;
+    .badge:hover {
+      transform: scale(1.15) rotate(5deg);
+      border-color: var(--primary);
+      filter: grayscale(0%) brightness(1.1);
+      box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
     }
 
-    .message {
+    .signature {
       margin-top: 2rem;
       font-style: italic;
-      color: #ccc;
+      color: var(--text-muted);
       text-align: center;
+      position: relative;
+      padding-top: 1rem;
+    }
+
+    .signature::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .stats-container {
+      margin: 2rem auto;
+      max-width: 600px;
+      background: rgba(20, 20, 20, 0.7);
+      border-radius: var(--border-radius);
+      padding: 1.5rem;
+      border: 1px solid rgba(0, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+
+    .stats-container:hover {
+      border-color: rgba(0, 255, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
     }
 
     .scroll-hint {
       position: absolute;
-      bottom: 20px;
-      width: 100%;
-      text-align: center;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 1rem;
-      color: #888;
+      color: var(--text-muted);
       animation: fadeHint 2s infinite ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .scroll-hint::after {
+      content: '↓';
+      font-size: 1.5rem;
     }
 
     @keyframes fadeHint {
-      0%, 100% { opacity: 0.2; }
+      0%, 100% { opacity: 0.3; }
       50% { opacity: 1; }
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(30px); }
       to { opacity: 1; transform: translateY(0); }
+    }
+
+    .floating {
+      animation: floating 6s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      margin-top: 3rem;
+    }
+
+    footer a {
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    footer a:hover {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .content-section {
+        padding: 1.5rem;
+        margin: 2rem 1rem;
+      }
+      .section-header {
+        font-size: 1.8rem;
+      }
+      .badge {
+        height: 50px;
+      }
+      .stats-container {
+        width: 95%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .content-section {
+        padding: 1.2rem;
+      }
+      .contacts-grid {
+        grid-template-columns: 1fr;
+      }
+      .badge {
+        height: 40px;
+      }
     }
   </style>
 </head>
 <body>
   <canvas id="constellation-canvas"></canvas>
+  
   <div id="page-container">
-    <div class="header">
+    <header class="header">
       <a href="#" id="webname">pooms.dev</a>
-      <div class="quicklinks">
-        <a href="https://github.com/PoomsXP">GitHub</a>
-        <a href="mailto:pooms@pooms.dev">Email</a>
-      </div>
-    </div>
-    <div class="scroll-hint">↓ Check these out</div>
-    <div class="content">
-      <h3 id="content-headers">About Me</h3>
-      <p>Hello, I'm Pooms, a Minecraft server dev and computer hobbyist.</p>
-      <p>Here's a bit about me:</p>
-      <ul>
-        <li>Experienced with Minecraft server administration and plugins</li>
-        <li>Self-taught programmer and general tinkerer</li>
-        <li>Enjoy building cool tools and learning how stuff works</li>
-        <li>I'm a member of Hack Club! You can see my coding time (since 7/24/25) below.</li>
-      </ul>
-      <center><iframe frameBorder="0" src="https://github-readme-stats.hackclub.dev/api/wakatime?username=14599&api_domain=hackatime.hackclub.com&&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8&theme=cobalt" width=500 height=300></iframe></center>
+      <nav class="quicklinks">
+        <a href="#about">About</a>
+        <a href="#social">Social</a>
+        <a href="https://github.com/PoomsXP" target="_blank">GitHub</a>
+        <a href="mailto:pooms@pooms.dev">Contact</a>
+      </nav>
+    </header>
 
-      <h3 id="content-headers">Social</h3>
-      <div class="contacts">
-        <div class="contact-item">
-          <img src="https://i.imgur.com/kAOFwQD.png" alt="Discord" />
+    <div class="scroll-hint">Explore my portfolio</div>
+
+    <section id="about" class="content-section">
+      <h2 class="section-header">About Me</h2>
+      <p>Hello there! I'm <span style="color: var(--primary); font-weight: 600;">Pooms</span>, a passionate Minecraft server developer and technology enthusiast with a knack for building innovative solutions.</p>
+      
+      <p>Here's what defines my journey:</p>
+      <ul>
+        <li>🎮 Seasoned Minecraft server administrator with extensive plugin development experience</li>
+        <li>💻 Self-taught programmer who thrives on solving complex problems</li>
+        <li>🛠️ Avid tinkerer who enjoys taking things apart to understand how they work</li>
+        <li>🚀 Member of the Hack Club community, constantly expanding my coding horizons</li>
+        <li>🔍 Lifelong learner with an insatiable curiosity for technology</li>
+      </ul>
+
+      <div class="stats-container">
+        <iframe frameBorder="0" src="https://github-readme-stats.hackclub.dev/api/wakatime?username=14599&api_domain=hackatime.hackclub.com&&custom_title=Hackatime+Stats&layout=compact&cache_seconds=0&langs_count=8&theme=cobalt" width="100%" height="300"></iframe>
+      </div>
+    </section>
+
+    <section id="social" class="content-section">
+      <h2 class="section-header">Connect With Me</h2>
+      <p>I'm always open to interesting conversations, collaborations, or just chatting about tech. Here's where you can find me:</p>
+      
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/3670/3670157.png" alt="Discord" loading="lazy" />
           <span class="contact-text"><a href="https://discord.com/users/1057667303925366894" target="_blank">Master_Of_Pooms</a></span>
         </div>
-        <div class="contact-item">
-          <img src="https://www.freeiconspng.com/uploads/github-icon-9.png" alt="GitHub" />
+        <div class="contact-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" alt="GitHub" loading="lazy" />
           <span class="contact-text"><a href="https://github.com/PoomsXP" target="_blank">PoomsXP</a></span>
         </div>
-        <div class="contact-item">
-          <img src="https://cdn.iconscout.com/icon/free/png-256/free-youtube-logo-icon-download-in-svg-png-gif-file-formats--social-media-70-flat-icons-color-pack-logos-432560.png" alt="YouTube" />
+        <div class="contact-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733646.png" alt="YouTube" loading="lazy" />
           <span class="contact-text"><a href="https://youtube.com/@PoomsXP" target="_blank">PoomsXP</a></span>
         </div>
-        <div class="contact-item">
-          <img src="https://i.imgur.com/mCsUz9p.png" alt="Minecraft" />
+        <div class="contact-card">
+          <img src="https://cdn-icons-png.flaticon.com/512/732/732238.png" alt="Minecraft" loading="lazy" />
           <span class="contact-text">Master_Of_Pooms</span>
         </div>
       </div>
-      <div class="message">(P.S. I'm probably working on something cool right now!)</div>
+      
+      <p class="signature">Currently brewing something extraordinary in my digital workshop...</p>
+    </section>
+
+    <div class="badges-container">
+      <a href="https://www.apple.com/mac/" target="_blank"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" class="badge floating" loading="lazy" /></a>
+      <a href="https://www.minecraft.net" target="_blank"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" class="badge floating" loading="lazy" /></a>
+      <a href="https://code.visualstudio.com/" target="_blank"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" class="badge floating" loading="lazy" /></a>
+      <a href="https://essential.gg/en" target="_blank"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" class="badge floating" loading="lazy" /></a>
+      <a href="https://ublockorigin.com" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" class="badge floating" loading="lazy" /></a>
+      <a href="https://brave.com" target="_blank"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" class="badge floating" loading="lazy" /></a>
+      <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" class="badge floating" loading="lazy" /></a>
+      <a href="https://hackclub.com" target="_blank"><img src="https://assets.hackclub.com/icon-rounded.png" alt="HackClub" class="badge floating" loading="lazy" /></a>
     </div>
-    <div class="badges">
-      <a href="https://mac.com"><img src="https://i.imgur.com/4kWRjHC.gif" alt="Mac" loading="lazy" /></a>
-      <a href="https://minecraft.net"><img src="https://i.imgur.com/sGTjP1G.gif" alt="Minecraft" loading="lazy" /></a>
-      <a href="https://code.visualstudio.com/"><img src="https://i.imgur.com/bCC6h8o.png" alt="Visual Studio Code" loading="lazy" /></a>
-      <a href="https://essential.gg/en"><img src="https://i.imgur.com/RJIGNnw.png" alt="Essential" loading="lazy" /></a>
-      <a href="https://ublockorigin.com"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/UBlock_Origin.svg/256px-UBlock_Origin.svg.png" alt="uBlock Origin" loading="lazy" /></a>
-      <a href="https://brave.com"><img src="https://i.imgur.com/0sC46VJ.png" alt="Brave Browser" loading="lazy" /></a>
-      <a href="/windows.html"><img src="https://i.imgur.com/N1SlRev.png" alt="Anti-Windows" loading="lazy" /></a>
-      <a href="https://hackclub.com"><img src="https://assets.hackclub.com/icon-rounded.png" alt="HackClub" loading="lazy" /></a>
-    </div>
+
+    <footer>
+      <p>© 2023 Pooms | Crafted with passion and too much caffeine</p>
+      <p><a href="mailto:pooms@pooms.dev">pooms@pooms.dev</a></p>
+    </footer>
   </div>
-  <div id="overlay"></div>
-  <audio id="leave-audio" src="leavingsosoon.mp3" preload="auto" hidden></audio>
-  <audio id="campfire-audio" src="campfire.mp3" preload="auto" loop hidden></audio>
-  <script defer>
-       
+
+  <script>
+    // Constellation animation
     (() => {
       const canvas = document.getElementById('constellation-canvas');
       const ctx = canvas.getContext('2d');
       let width, height;
       let stars = [];
-      let lines = [];
-      const maxStars = 100;
-      const maxDistance = 150;
+      const maxStars = 120;
+      const maxDistance = 180;
+      const starColors = ['#ffffff', '#00ffff', '#ff00ff', '#ffff00'];
+      const lineColors = ['rgba(0, 255, 255, 0.3)', 'rgba(255, 0, 255, 0.3)', 'rgba(255, 255, 255, 0.2)'];
 
       function resize() {
         width = window.innerWidth;
@@ -299,21 +521,40 @@
         constructor() {
           this.x = Math.random() * width;
           this.y = Math.random() * height;
-          this.radius = Math.random() * 1.1 + 0.3;
-          this.vx = (Math.random() - 0.5) * 0.2;
-          this.vy = (Math.random() - 0.5) * 0.2;
+          this.radius = Math.random() * 1.5 + 0.5;
+          this.vx = (Math.random() - 0.5) * 0.3;
+          this.vy = (Math.random() - 0.5) * 0.3;
+          this.color = starColors[Math.floor(Math.random() * starColors.length)];
+          this.twinkle = Math.random() * 0.5 + 0.5;
+          this.twinkleSpeed = Math.random() * 0.02 + 0.01;
         }
+        
         move() {
           this.x += this.vx;
           this.y += this.vy;
-
+          
+          // Bounce off edges
           if (this.x < 0 || this.x > width) this.vx *= -1;
           if (this.y < 0 || this.y > height) this.vy *= -1;
+          
+          // Twinkle effect
+          this.twinkle += this.twinkleSpeed;
+          if (this.twinkle > 1 || this.twinkle < 0.5) this.twinkleSpeed *= -1;
         }
+        
         draw() {
           ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fillStyle = 'white';
+          ctx.arc(this.x, this.y, this.radius * this.twinkle, 0, Math.PI * 2);
+          
+          // Create glow effect
+          const gradient = ctx.createRadialGradient(
+            this.x, this.y, 0,
+            this.x, this.y, this.radius * 3 * this.twinkle
+          );
+          gradient.addColorStop(0, this.color);
+          gradient.addColorStop(1, 'transparent');
+          
+          ctx.fillStyle = gradient;
           ctx.fill();
         }
       }
@@ -331,9 +572,12 @@
             const dx = stars[i].x - stars[j].x;
             const dy = stars[i].y - stars[j].y;
             const dist = Math.sqrt(dx * dx + dy * dy);
+            
             if (dist < maxDistance) {
-              ctx.strokeStyle = 'rgba(255,255,255,' + (1 - dist / maxDistance) + ')';
-              ctx.lineWidth = 0.5;
+              const opacity = 1 - dist / maxDistance;
+              const lineColor = lineColors[Math.floor(Math.random() * lineColors.length)];
+              ctx.strokeStyle = lineColor.replace('0.3', opacity.toString());
+              ctx.lineWidth = 0.8 * opacity;
               ctx.beginPath();
               ctx.moveTo(stars[i].x, stars[i].y);
               ctx.lineTo(stars[j].x, stars[j].y);
@@ -345,9 +589,9 @@
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
-        stars.forEach(s => {
-          s.move();
-          s.draw();
+        stars.forEach(star => {
+          star.move();
+          star.draw();
         });
         drawLines();
         requestAnimationFrame(animate);
@@ -358,49 +602,31 @@
         createStars();
       });
 
+      // Header scroll effect
+      const header = document.querySelector('.header');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+          });
+        });
+      });
+
+      // Initialize
       resize();
       createStars();
       animate();
     })();
-
-    // Audio and overlay logic
-    const audio = document.getElementById('leave-audio');
-    const campfireAudio = document.getElementById('campfire-audio');
-    const overlay = document.getElementById('overlay');
-
-    let canPlayAudio = false;
-    let isClosingSequence = false;
-
-    // Unlock audio on first interaction
-    document.addEventListener('click', () => {
-      if (!canPlayAudio) {
-        audio.muted = true;
-        audio.play().then(() => {
-          audio.pause();
-          audio.currentTime = 0;
-          audio.muted = false;
-          canPlayAudio = true;
-          console.log("Audio unlocked.");
-        }).catch(err => console.warn("Audio unlock failed:", err));
-      }
-    });
-
-    window.addEventListener('beforeunload', (e) => {
-      if (canPlayAudio && !isClosingSequence) {
-        isClosingSequence = true;
-
-
-        // Play leave audio
-        audio.play().catch(() => {});
-
-
-        // Show popup message on close (standard)
-        e.preventDefault();
-        e.returnValue = '';
-        return '';
-      }
-    });
-
   </script>
 </body>
 </html>

@@ -50,9 +50,11 @@
       loading.textContent = 'Generating... Please wait.';
       iframe.srcdoc = ''; // Clear previous
 
-      const prompt = `Generate a complete single-file HTML website for a fictional business. 
-Include all CSS in <style> tags and JavaScript in <script> tags inside the same HTML file. 
-Do NOT use markdown or triple backticks. Only output the full HTML document starting with <!DOCTYPE html>. No explanation.`;
+      const prompt = `You must generate a completely new, creative, and *non-space-themed* fictional business every time. 
+Never use "Galactic Getaways", anything similar, or space travel themes. Pick a new industry at random (e.g., bakery, tech, pet care, art studio, clothing, etc). 
+Create a complete standalone HTML website for the business. Include all CSS inside <style> tags and all JS in <script> tags in the same file. 
+Start with <!DOCTYPE html> and output ONLY the code — no markdown, no explanation.`;
+
 
       try {
         const response = await fetch('https://ai.hackclub.com/chat/completions', {

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Random Business Site Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #005ec2;
+    }
+    iframe {
+      width: 100%;
+      height: 80vh;
+      border: 2px solid #ccc;
+      margin-top: 20px;
+      border-radius: 10px;
+      background: white;
+    }
+    #loading {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Random Business Website Generator</h1>
+  <button onclick="generateWebsite()">Generate Website</button>
+  <div id="loading"></div>
+  <iframe id="preview" sandbox="allow-scripts allow-same-origin"></iframe>
+
+  <script>
+    async function generateWebsite() {
+      const loading = document.getElementById('loading');
+      const iframe = document.getElementById('preview');
+      loading.textContent = 'Generating... Please wait.';
+
+      const prompt = `Create a full HTML, CSS, and JavaScript website for a random fictional business. Make it visually appealing. Include <!DOCTYPE html> and all required tags.`;
+
+      try {
+        const response = await fetch('https://ai.hackclub.com/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messages: [{ role: 'user', content: prompt }]
+          }),
+        });
+
+        const data = await response.json();
+        const html = data.choices?.[0]?.message?.content;
+
+        if (!html || !html.includes('<html')) {
+          throw new Error("AI response doesn't look like valid HTML.");
+        }
+
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        iframe.src = url;
+
+        loading.textContent = '';
+      } catch (err) {
+        console.error(err);
+        loading.textContent = 'Error generating website. Try again.';
+        iframe.src = 'about:blank';
+      }
+    }
+  </script>
+</body>
+</html>

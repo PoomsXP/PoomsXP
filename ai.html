@@ -50,10 +50,18 @@
       loading.textContent = 'Generating... Please wait.';
       iframe.srcdoc = ''; // Clear previous
 
-      const prompt = `You must generate a completely new, creative, and *non-space-themed* fictional business every time. 
-Never use "Galactic Getaways", anything similar, or space travel themes. Pick a new industry at random (e.g., bakery, tech, pet care, art studio, clothing, etc). 
-Create a complete standalone HTML website for the business. Include all CSS inside <style> tags and all JS in <script> tags in the same file. 
-Start with <!DOCTYPE html> and output ONLY the code — no markdown, no explanation.`;
+      const prompt = `You are a professional web designer.
+
+Create a complete, realistic, single-page HTML website for a unique fictional small business. 
+The business should be entirely original and professionally themed — no science fiction, no unrealistic services, no recycled names like "Galactic Getaways" or "GreenTech Solutions".
+
+Make sure the business name, industry, and visual style vary every time. Examples of realistic industries: bakery, hair salon, local gym, tutoring service, architecture firm, plumber, etc.
+
+The entire website must be in one single HTML file using valid HTML5.
+Put all CSS in <style> tags inside the <head>.
+Put all JavaScript in <script> tags at the bottom of <body>.
+Start with <!DOCTYPE html> and do not use markdown, explanations, or triple backticks — just output the raw HTML file.`;
+
 
 
       try {
